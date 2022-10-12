@@ -32,7 +32,7 @@ namespace API
         {
 
             services.AddCors();
-            
+            services.AddIdentityServices(_config);   
  
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             
@@ -49,7 +49,8 @@ namespace API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-
+            
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -62,6 +63,8 @@ namespace API
             app.UseRouting();
 
             app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));
+
+            app.UseAuthentication();
  
             app.UseAuthorization();
  
