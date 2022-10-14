@@ -2,16 +2,15 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Member } from '../_models/member';
-
+import { map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MembersService {
-
   baseUrl = environment.apiUrl;
-
-  constructor(private http: HttpClient) { }
+  members: Member[] = [];
+  constructor(private http: HttpClient) {}
 
   getMembers() {
     return this.http.get<Member[]>(this.baseUrl + 'users');
@@ -21,5 +20,7 @@ export class MembersService {
     return this.http.get<Member>(this.baseUrl + 'users/' + username);
   }
 
-
+  updateMember(member: Member) {
+    return this.http.put(this.baseUrl + 'users', member);
+  }
 }
