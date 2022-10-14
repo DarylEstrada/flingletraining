@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './_modules/shared.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { JwtInterceptor } from './_interceptors/jwt.interceptor';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +20,7 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
+import { MemberCardComponent } from './members/member-card/member-card.component';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { TestErrorsComponent } from './errors/test-errors/test-errors.component'
     MemberDetailComponent,
     NotFoundComponent,
     ServerErrorComponent,
-    TestErrorsComponent
+    TestErrorsComponent,
+    MemberCardComponent
   ],
   imports: [
     BrowserModule,
@@ -45,8 +48,9 @@ import { TestErrorsComponent } from './errors/test-errors/test-errors.component'
     SharedModule
   ],
   providers: [
-    
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
+
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true}
 
   ],
   bootstrap: [AppComponent]
