@@ -13,6 +13,7 @@ using System.Security.Claims;
 namespace API.Controllers;
 using API.Extensions;
 using Microsoft.AspNetCore.Http;
+using API.Helpers;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -31,13 +32,23 @@ using Microsoft.AspNetCore.Http;
               _userRepository = userRepository;
         }
 
-         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
-            var users = await _userRepository.GetMembersAsync();
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+            userParams.CurrentUsername = user.UserName;
+ 
+            if (string.IsNullOrEmpty(userParams.Gender))
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+ 
+            var users = await _userRepository.GetMembersAsync(userParams);
+ 
+            Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
+                users.TotalCount, users.TotalPages);
  
             return Ok(users);
         }
+
 
          [HttpPut]
         public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
