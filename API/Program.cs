@@ -23,6 +23,8 @@ namespace API
             using var scope = host.Services.CreateScope();
             var services = scope.ServiceProvider;
 
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
             try
             {
                 var context = services.GetRequiredService<DataContext>();

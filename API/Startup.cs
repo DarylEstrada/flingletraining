@@ -33,19 +33,17 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddSignalR();
-            services.AddCors();
-            services.AddIdentityServices(_config);   
- 
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            
             services.AddApplicationServices(_config);
-
             services.AddControllers();
+            services.AddIdentityServices(_config);   
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
             });
+            services.AddCors();
+            services.AddSignalR();
+
         }
  
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
